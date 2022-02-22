@@ -1,8 +1,6 @@
 package com.example.demo.models;
 
 import com.example.demo.dto.NetworkDTO;
-import com.example.demo.dto.ProductTypes;
-import com.example.demo.dto.Tags;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,7 +17,11 @@ import java.util.stream.Collectors;
 @ToString
 public class Network {
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String networkId;
+
     private long organizationId;
     private String url;
     private String name;
@@ -27,19 +29,17 @@ public class Network {
     private String enrollmentString;
     private String notes;
 
-    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    @JoinColumn(name = "network_id")
-    private List<ProductTypes> productTypes = new ArrayList<>();
+    @OneToMany(mappedBy = "network", fetch = FetchType.LAZY)
+    private List<ProductTypes> productTypes;
 
-    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    @JoinColumn(name = "network_id")
-    private List<Tags> tags = new ArrayList<>();
-
+    @OneToMany(mappedBy = "network", fetch = FetchType.LAZY)
+    private List<Tags> tags ;
 
 
     public static NetworkDTO toNetworkDTO(Network network){
         return NetworkDTO.builder()
                 .id(network.id)
+                .networkId(network.networkId)
                 .name(network.name)
                 .timeZone(network.timeZone)
                 .url(network.url)

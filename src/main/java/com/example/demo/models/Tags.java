@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package com.example.demo.models;
 
 import com.example.demo.models.Network;
 import lombok.*;
@@ -11,14 +11,18 @@ import javax.persistence.*;
 @Getter
 @Setter
 @ToString
+@Builder
 public class Tags {
-//    @JoinColumn(name = "network_id")
-//    @ManyToOne
-//    private Network network;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String tagName;
+
+    @JoinColumn(name = "network_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Network network;
 
     public Tags(String tagName) {
         this.tagName = tagName;

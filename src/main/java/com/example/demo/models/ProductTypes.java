@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package com.example.demo.models;
 
 import com.example.demo.models.Network;
 import lombok.*;
@@ -13,13 +13,14 @@ import javax.persistence.*;
 @ToString
 @Builder
 public class ProductTypes {
-//    @JoinColumn(name = "network_id", referencedColumnName = "id")
-//    @ManyToOne
-//    private Network network;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JoinColumn(name = "network_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Network network;
 
     public ProductTypes(String productName) {
         this.productName = productName;
